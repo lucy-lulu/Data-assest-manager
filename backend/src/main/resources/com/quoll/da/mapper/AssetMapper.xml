@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quoll.da.mapper.AssetMapper">
+    <delete id="removeAssets">
+        delete from Asset where assetId in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <update id="update">
+        UPDATE Asset
+        SET assetName = #{assetName},
+            format = #{format},
+            author = #{author},
+            description = #{description},
+            tag = #{tag},
+            canvasLink = #{canvasLink},
+            url = #{url},
+            studentType = #{studentType},
+            subjectNumber = #{subjectNumber}
+        WHERE assetId = #{assetId}
+    </update>
+
+    <select id="searchAssets" resultType="com.quoll.da.pojo.Asset">
+        select * from Asset WHERE 1 = 1
+            <if test="keyword != null and keyword != ''">
+                and (assetName like concat('%', #{keyword}, '%')
+                or description like concat('%', #{keyword}, '%')
+                or tag like concat('%', #{keyword}, '%'))
+            </if>
+            <if test="author != null">
+                and author = #{author}
+            </if>
+            <if test="startDateTime != null and endDateTime != null">
+                and createTime between #{startDateTime} and #{endDateTime}
+            </if>
+            <if test="format != null and format !=''">
+                and format = #{format}
+            </if>
+            <if test="studentType != null and format !=''">
+                and studentType = #{studentType}
+            </if>
+            <if test="subjectNumber != null and format !=''">
+                and subjectNumber = #{subjectNumber}
+            </if>
+            <choose>
+                <when test="sortBy == 'relevance'">
+                    order by relevance
+                </when>
+                <when test="sortBy == 'date'">
+                    order by createTime
+                </when>
+                <when test="sortBy == 'visitCount'">
+                    order by visitCount
+                </when>
+                <otherwise>
+                    order by createTime
+                </otherwise>
+            </choose>
+            <if test="order == 'desc'">
+                desc
+            </if>
+            <if test="order == 'asc'">
+                asc
+            </if>
+    </select>
+
+    <select id="filterAssets" resultType="com.quoll.da.pojo.Asset">
+        select * from Asset
+        <where>
+            <if test="format != null and format !=''">
+                and format = #{format}
+            </if>
+            <if test="studentType != null and format !=''">
+                and studentType = #{studentType}
+            </if>
+            <if test="subjectNumber != null and format !=''">
+                and subjectNumber = #{subjectNumber}
+            </if>
+        </where>
+    </select>
+
+    <select id="sortAssets" resultType="com.quoll.da.pojo.Asset">
+        select * from Asset
+        <choose>
+            <when test="sortBy == 'relevance'">
+                order by relevance
+            </when>
+            <when test="sortBy == 'date'">
+                order by createTime
+            </when>
+            <when test="sortBy == 'visitCount'">
+                order by visitCount
+            </when>
+            <otherwise>
+                order by createTime
+            </otherwise>
+        </choose>
+        <if test="order == 'desc'">
+            desc
+        </if>
+        <if test="order == 'asc'">
+            asc
+        </if>
+    </select>
+
+    <select id="selectAssetById" resultType="com.quoll.da.pojo.Asset">
+        SELECT * FROM Asset WHERE assetid = #{assetId}
+    </select>
+
+    <update id="updateVisitCount">
+        UPDATE Asset SET visitCount = visitCount + 1 WHERE assetid = #{assetId}
+    </update>
+
+    <select id="isAssetCollected" resultType="int">
+        SELECT COUNT(1) FROM TeacherCollected WHERE teacherId = #{teacherId} AND assetId = #{assetId}
+    </select>
+
+    <insert id="insertTeacherCollected">
+        INSERT INTO TeacherCollected (teacherId, assetId)
+        VALUES (#{teacherId}, #{assetId})
+    </insert>
+
+    <select id="selectCollectedAssetsByTeacherIdWithPagination" resultType="com.quoll.da.pojo.Asset">
+        select * from TeacherCollected
+        <where>
+            teacherId = #{teacherId}
+        </where>
+    </select>
+
+    <select id="countCollectedAssetsByTeacherId" resultType="java.lang.Long">
+        SELECT COUNT(*)
+        FROM TeacherCollected
+        WHERE teacherId = #{teacherId}
+    </select>
+
+    <select id="selectCollectedAssetsByTeacherId" resultType="com.quoll.da.pojo.Asset">
+        SELECT a.assetId, a.assetName, a.format, a.createTime, a.author, a.description, a.tag, a.canvasLink, a.url
+        FROM Asset a
+                 JOIN TeacherCollected tc ON a.assetId = tc.assetId
+        WHERE tc.teacherId = #{teacherId}
+    </select>
+
+    <select id="isAssetCollectedByTeacher" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM TeacherCollected
+        WHERE teacherId = #{teacherId} AND assetId = #{assetId}
+    </select>
+</mapper>

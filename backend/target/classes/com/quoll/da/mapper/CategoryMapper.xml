@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.quoll.da.mapper.CategoryMapper">
+    <delete id="clearTeacherCategory">
+        delete from classification where categoryId in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <delete id="deleteTeacherCategory">
+        delete from category where categoryId in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <delete id="removeAsset">
+        delete from classification where categoryId = #{categoryId} and assetId in
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <select id="getCategoryAsset" resultType="com.quoll.da.pojo.Asset">
+        select * from ClassifiedAsset
+        <where>
+            categoryId = #{categoryId}
+<!--            <if test="assetName != null">-->
+<!--                and assetName like concat('%',#{assetName},'%')-->
+<!--            </if>-->
+        </where>
+    </select>
+</mapper>

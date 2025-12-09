@@ -1,4 +1,4 @@
-# DA-Quoll 
+# DA-Quoll - course number swen90014
 ![Static Badge](https://img.shields.io/badge/language-Java-blue)
 ![Static Badge](https://img.shields.io/badge/framework-spring%20boot-green)
 
@@ -11,19 +11,6 @@ Over the years, The Melbourne School of Professional and Continuing Education's 
 
 To address this challenge, we have developed a system that helps users manually create, search for, and collect the teaching resources they need, simplifying the process of resource management and access. Users can upload their own created resources for others to use, and the system supports generating resource details automatically through Canvas file URLs and creating assets in the database, speeding up the resource upload process. In future development, we will also consider integrating AI tools to further enhance the system's capabilities.
 
-# Team members
-| **Name**              | **Role**                  | **Contact**                         | Front-end/Back-end |
-| -----------           | -----------               | -----------                         | -----------           |
-| Zuqiang Yu            | Product Owner             | zuqiangy@student.unimelb.edu.au          | Back-end & Front-end |
-| Luyun Li              | Scrum Master              | luyunli@student.unimelb.edu.au      | Back-end & Front-end |
-| Chan Tang             | Quality Assurance Lead    | chtang1@student.unimelb.edu.au          | Front-end |
-| Xiaolin Liu           | Architecture Lead         | xiaolin10@student.unimelb.edu.au          | Back-end |
-| Xunjie Gu             | Development Environment Lead  | xunjieg@student.unimelb.edu.au          | Front-end |
-| Yiliang Ding          | Developer                 | yiliding1@student.unimelb.edu.au          | Front-end |
-| Linying Wei           | Developer                 | linyingwei@student.unimelb.edu.au          | Back-end & Front-end |
-| Yurui Yan             | Developer                 | yuruiyan@student.unimelb.edu.au          | Back-end |
-
-**Supervisor:** Jinhao He (Stephen)
 
 # Handover
 As we conclude the development of the project, we are ensuring a smooth transition for future maintenance and further enhancements. We have deployed our product to cloud, and can be visit here: http://34.129.9.77/login This cloud deployment is available until 08/12/2024, apart from the delpoy, we also conclude useful documentation for further development, the final handover includes:
